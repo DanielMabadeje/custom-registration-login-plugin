@@ -70,6 +70,10 @@ class UserLogin
             if (is_wp_error($user)) {
                 echo $user->get_error_message();
             }
+
+            wp_set_auth_cookie();
+
+            do_action('wp_login',  $user_login, $user);
         }
     }
 
