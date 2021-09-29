@@ -1,44 +1,34 @@
-<?php 
+<?php
 
 
 $logged_in = is_user_logged_in();
-                    
-    if ($logged_in) {
-                        
-        echo "User is logged in."; 
-        wp_redirect('/');
-                          
+
+if ($logged_in) {
+
+    echo "User is logged in.";
+    wp_redirect('/');
+} else {
+
+    echo "User isn't logged in.";
+}
+
+
+
+if ($_SERVER['REQUEST_METHOD'] == "POST" && wp_verify_nonce($_POST['rimplenet-user-login-form'], 'rimplenet-user-login-form')) {
+    $data = $_POST;
+
+    $results = $this->customLogin($data);
+
+    if ($results) {
+        echo "<script>alert('Login Successfully')</script>";
     } else {
-                        
-        echo "User isn't logged in.";
-		
-    }      
+        echo "<script>alert('Login Unsuccessful')</script>";
+?>
+<?php
 
-    
-    
-    if ($_SERVER['REQUEST_METHOD'] == "POST" && wp_verify_nonce($_POST['rimplenet-user-login-form'], 'rimplenet-user-login-form')) {
-        $data = $_POST;
-
-        $results = $this->customLogin($data);
-
-        if ($results) {
-            echo "<script>alert('Login Successfully')</script>";
-        } else {
-            echo "<script>alert('Login Unsuccessful')</script>";
-    ?>
-            <center>
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong> ERROR: </strong> Unable to login
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            </center>
-    <?php
-            return;
-        }
     }
-    ?>
+}
+?>
 
 
 <!doctype html>
@@ -70,7 +60,7 @@ $logged_in = is_user_logged_in();
 
 
 
-  
+
     <!-- App Header -->
     <div class="appHeader no-border transparent position-absolute">
         <div class="left">
