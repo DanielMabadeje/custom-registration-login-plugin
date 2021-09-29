@@ -27,7 +27,8 @@
  * @subpackage Finapp/includes
  * @author     finapp <mabadejedaniel1@gmail.com>
  */
-class Finapp {
+class Finapp
+{
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -66,8 +67,9 @@ class Finapp {
 	 *
 	 * @since    1.0.0
 	 */
-	public function __construct() {
-		if ( defined( 'FINAPP_VERSION' ) ) {
+	public function __construct()
+	{
+		if (defined('FINAPP_VERSION')) {
 			$this->version = FINAPP_VERSION;
 		} else {
 			$this->version = '1.0.0';
@@ -78,7 +80,6 @@ class Finapp {
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
-
 	}
 
 	/**
@@ -97,39 +98,45 @@ class Finapp {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function load_dependencies() {
+	private function load_dependencies()
+	{
 
 		/**
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-finapp-loader.php';
+		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-finapp-loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-finapp-i18n.php';
+		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-finapp-i18n.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-finapp-admin.php';
+		require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-finapp-admin.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the registration area.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-user-registration.php';
-		$usere_register=new UserRegistration();
+		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-user-registration.php';
+		$usere_register = new UserRegistration();
+
+		/**
+		 * The class responsible for defining all actions that occur in the registration area.
+		 */
+		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-user-login.php';
+		$usere_login = new UserLogin();
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-finapp-public.php';
+		require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-finapp-public.php';
 
 		$this->loader = new Finapp_Loader();
-
 	}
 
 	/**
@@ -141,12 +148,12 @@ class Finapp {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function set_locale() {
+	private function set_locale()
+	{
 
 		$plugin_i18n = new Finapp_i18n();
 
-		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
-
+		$this->loader->add_action('plugins_loaded', $plugin_i18n, 'load_plugin_textdomain');
 	}
 
 	/**
@@ -156,13 +163,13 @@ class Finapp {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function define_admin_hooks() {
+	private function define_admin_hooks()
+	{
 
-		$plugin_admin = new Finapp_Admin( $this->get_plugin_name(), $this->get_version() );
+		$plugin_admin = new Finapp_Admin($this->get_plugin_name(), $this->get_version());
 
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-
+		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
+		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
 	}
 
 	/**
@@ -172,13 +179,13 @@ class Finapp {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function define_public_hooks() {
+	private function define_public_hooks()
+	{
 
-		$plugin_public = new Finapp_Public( $this->get_plugin_name(), $this->get_version() );
+		$plugin_public = new Finapp_Public($this->get_plugin_name(), $this->get_version());
 
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-
+		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
+		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
 	}
 
 	/**
@@ -186,7 +193,8 @@ class Finapp {
 	 *
 	 * @since    1.0.0
 	 */
-	public function run() {
+	public function run()
+	{
 		$this->loader->run();
 	}
 
@@ -197,7 +205,8 @@ class Finapp {
 	 * @since     1.0.0
 	 * @return    string    The name of the plugin.
 	 */
-	public function get_plugin_name() {
+	public function get_plugin_name()
+	{
 		return $this->plugin_name;
 	}
 
@@ -207,7 +216,8 @@ class Finapp {
 	 * @since     1.0.0
 	 * @return    Finapp_Loader    Orchestrates the hooks of the plugin.
 	 */
-	public function get_loader() {
+	public function get_loader()
+	{
 		return $this->loader;
 	}
 
@@ -217,8 +227,8 @@ class Finapp {
 	 * @since     1.0.0
 	 * @return    string    The version number of the plugin.
 	 */
-	public function get_version() {
+	public function get_version()
+	{
 		return $this->version;
 	}
-
 }

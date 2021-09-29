@@ -33,6 +33,8 @@ class UserRegistration
         $this->postdata = $data;
         $email = $this->postdata['email'];
 
+        var_dump($this->postdata);
+        // die;
         // add_filter('wpmu_signup_user_notification', '__return_true');
         // add_action('user_register', array($this, 'addUser'));
         // add_action('login_init', array($this, 'addUser'));
@@ -42,9 +44,9 @@ class UserRegistration
             global $wpdb;
 
 
-            return;
+            return true;
         } else {
-            # code...
+            return false;
         }
 
 
@@ -64,16 +66,18 @@ class UserRegistration
         if (!$user_id) {
 
             global $wpdb;
-            $user_id = wp_insert_user(array(
-                'user_login' => $data['user_email'],
-                'user_pass' => $data['password'],
-                'user_email' => $data['user_email'],
-                'first_name' => '',
-                'last_name' => '',
-                'display_name' => $data["user_email"],
-                'role' => 'editor'
-            ));
-            //             $user_id = wp_create_user($data['user_login'], $data['password'], $data['user_email']);
+            // $user_id = wp_insert_user(array(
+            //     'user_login' => $data['user_email'],
+            //     'user_pass' => $data['password'],
+            //     'user_email' => $data['user_email'],
+            //     'first_name' => '',
+            //     'last_name' => '',
+            //     'display_name' => $data["user_email"],
+            //     'role' => 'editor'
+            // ));
+
+            // var_dump(/)
+            $user_id = wp_create_user($data['user_email'], $data['password'], $data['user_email']);
             if (is_wp_error($user_id)) {
                 $error = $user_id->get_error_message();
                 //handle error here
@@ -92,8 +96,11 @@ class UserRegistration
             // foreach ($data['meta'] as $key => $value) {
             //     $this->crf_user_register($user_id, $key, $value);
             // }
+
+            return true;
         } else {
-            $error = __('User already exists.  Password inherited.');
+            $error = __('User already exists.');
+            return false;
         }
     }
 

@@ -1,10 +1,52 @@
+<?php 
+
+
+$logged_in = is_user_logged_in();
+                    
+    if ($logged_in) {
+                        
+        echo "User is logged in."; 
+        wp_redirect('/');
+                          
+    } else {
+                        
+        echo "User isn't logged in.";
+		
+    }      
+
+    
+    
+    if ($_SERVER['REQUEST_METHOD'] == "POST" && wp_verify_nonce($_POST['rimplenet-user-login-form'], 'rimplenet-user-login-form')) {
+        $data = $_POST;
+
+        $results = $this->customLogin($data);
+
+        if ($results) {
+            echo "<script>alert('Login Successfully')</script>";
+        } else {
+            echo "<script>alert('Login Unsuccessful')</script>";
+    ?>
+            <center>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong> ERROR: </strong> Unable to login
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </center>
+    <?php
+            return;
+        }
+    }
+    ?>
+
+
 <!doctype html>
 <html lang="en">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#000000">
@@ -28,35 +70,7 @@
 
 
 
-    <?php
-
-if ($_SERVER['REQUEST_METHOD'] == "POST" && wp_verify_nonce($_POST['rimplenet-user-login-form'], 'rimplenet-user-login-form')) {
-    $data = [];
-
-    $results = $this->customRegistration($data);
-
-    if ($results['status'] == true) {
-        echo "<script>alert('Login Successfully')</script>";
-    } else {
-        echo "<script>alert('Login Unsuccessful')</script>";
-?>
-    <center>
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <strong> ERROR: </strong> <?= $results['message'] ?>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    </center>
-<?php
-    return;
-}
-}
-?>
-
-
-
-
+  
     <!-- App Header -->
     <div class="appHeader no-border transparent position-absolute">
         <div class="left">
@@ -79,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && wp_verify_nonce($_POST['rimplenet-us
         </div>
         <div class="section mb-5 p-2">
 
-            <form action="index.html">
+            <form action="" method="post">
                 <div class="card">
                     <div class="card-body pb-1">
                         <div class="form-group basic">
@@ -95,8 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && wp_verify_nonce($_POST['rimplenet-us
                         <div class="form-group basic">
                             <div class="input-wrapper">
                                 <label class="label" for="password1">Password</label>
-                                <input type="password" class="form-control" id="password1" autocomplete="off"
-                                    placeholder="Your password" name="user_pass">
+                                <input type="password" class="form-control" id="password1" autocomplete="off" placeholder="Your password" name="user_pass">
                                 <i class="clear-input">
                                     <ion-icon name="close-circle"></ion-icon>
                                 </i>
@@ -123,7 +136,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && wp_verify_nonce($_POST['rimplenet-us
 
     </div>
     <!-- * App Capsule -->
-
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script> <!-- Splide -->
+    <script src="<?php echo WP_PLUGIN_URL; ?>/finapp/public/js/base.js"> </script>
 </body>
 
 </html>

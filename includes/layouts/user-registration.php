@@ -37,10 +37,10 @@
 
         $results = $this->customRegistration($data);
 
-        if ($results['status'] == true) {
+        if ($results) {
             echo "<script>alert('Registered Successfully')</script>";
         } else {
-            echo "<script>alert('Refistreation Failed')</script>";
+            echo "<script>alert('Registration Failed')</script>";
     ?>
             <center>
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -180,7 +180,7 @@
 
 
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script> <!-- Splide -->
-    <script src="<?php echo WP_PLUGIN_URL; ?>/finapp/public/js/base.js">  </script>
+    <script src="<?php echo WP_PLUGIN_URL; ?>/finapp/public/js/base.js"> </script>
 </body>
 
 </html>

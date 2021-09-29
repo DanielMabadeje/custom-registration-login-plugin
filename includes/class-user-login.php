@@ -6,8 +6,8 @@ class UserLogin
     public $postdata;
     public function __construct()
     {
-        add_shortcode('finapp_user_login', array($this, 'showLoginForm'));
-        add_action('after_setup_theme', 'showLoginForm');
+        add_shortcode('finapp-user-login', array($this, 'showLoginForm'));
+        // add_action('after_setup_theme', array($this, 'showLoginForm'));
     }
 
     public function showLoginForm()
@@ -30,14 +30,14 @@ class UserLogin
         $this->postdata = $_POST;
         $email = $this->postdata['user_email'];
 
-        if ($user_data = $this->addUser()) {
+        if ($user_data = $this->loginUser()) {
 
             global $wpdb;
 
 
-            return;
+            return true;
         } else {
-            # code...
+            return false;
         }
 
 
@@ -57,10 +57,10 @@ class UserLogin
         if ($user_id) {
 
             global $wpdb;
-            $credentials = wp_insert_user(array(
+            $credentials = array(
                 'user_login' => $data['user_email'],
-                'user_pass' => $data['password']
-            ));
+                'user_password' => $data['user_pass']
+            );
             //             $user_id = wp_create_user($data['user_login'], $data['password'], $data['user_email']);
 
             // wp_signon($credentials, '');
@@ -69,11 +69,14 @@ class UserLogin
 
             if (is_wp_error($user)) {
                 echo $user->get_error_message();
+                return false;
             }
 
-            wp_set_auth_cookie();
+            // wp_set_auth_cookie();
 
-            do_action('wp_login',  $user_login, $user);
+            // do_action('wp_login',  $user_login, $user);
+
+            return true;
         }
     }
 
