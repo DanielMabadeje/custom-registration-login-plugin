@@ -7,6 +7,7 @@ class UserLogin
     {
         add_shortcode('finapp-user-login', array($this, 'showLoginForm'));
         // add_action('after_setup_theme', array($this, 'showLoginForm'));
+
     }
 
     public function showLoginForm()
@@ -25,9 +26,14 @@ class UserLogin
         $this->postdata = $_POST;
         $email = $this->postdata['user_email'];
 
+        // add_action('after_setup_theme', array($this, 'loginUser'));
+        // Run before the headers and cookies are sent.
+        // add_action('after_setup_theme', array($this, 'loginUser'));
         if ($user_data = $this->loginUser()) {
 
             global $wpdb;
+
+            var_dump($user_data);
             return true;
         } else {
             return false;
@@ -39,6 +45,7 @@ class UserLogin
         if (is_null($data)) {
             $data = $this->postdata;
         }
+        var_dump($data);
 
         $user_id = email_exists($data['user_email']);
         if ($user_id) {
@@ -49,14 +56,15 @@ class UserLogin
             );
             // wp_signon($credentials, '');
 
-            $user = wp_signon($credentials, false);
+            // $cookie = wp_set_auth_cookie();
+            $user = wp_signon($credentials, $cookie);
 
             if (is_wp_error($user)) {
                 echo $user->get_error_message();
                 return false;
             }
 
-            // wp_set_auth_cookie();
+            // wp_set_auth_cookie($user->ID);
             // do_action('wp_login',  $user_login, $user);
 
             return true;

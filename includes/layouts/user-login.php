@@ -6,7 +6,7 @@ $logged_in = is_user_logged_in();
 if ($logged_in) {
 
     echo "User is logged in.";
-    wp_redirect('/');
+    // wp_redirect('/');
 } else {
 
     echo "User isn't logged in.";
@@ -17,15 +17,16 @@ if ($logged_in) {
 if ($_SERVER['REQUEST_METHOD'] == "POST" && wp_verify_nonce($_POST['rimplenet-user-login-form'], 'rimplenet-user-login-form')) {
     $data = $_POST;
 
-    $results = $this->customLogin($data);
+    $results = add_action('after_setup_theme', array($this, 'customLogin'));
+    // $results = $this->customLogin($data);
 
     if ($results) {
-        echo "<script>alert('Login Successfully')</script>";
+        echo "<script>alert('Login Successful')</script>";
     } else {
         echo "<script>alert('Login Unsuccessful')</script>";
 ?>
 <?php
-
+        return;
     }
 }
 ?>
